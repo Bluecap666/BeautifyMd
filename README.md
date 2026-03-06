@@ -2,14 +2,19 @@
 
 ![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
-![Version](https://img.shields.io/badge/Version-2.0-red.svg)
+![Version](https://img.shields.io/badge/Version-3.0-red.svg)
+![GitHub](https://img.shields.io/badge/GitHub-Repo-blue)
+![Stars](https://img.shields.io/github/stars/Bluecap666/BeautifyMd?style=social)
 
 一个强大的 AI 驱动工具，用于美化您的 Markdown 文档。自动添加 emoji、分割线、优化格式，让文档更加美观和专业！
 
-**v2.0 新增功能:**
+**v3.0 新增功能：**
 - 🌐 **Web UI 界面** - 无需命令行，在线美化
-- 🤖 **多模型支持** - 支持 OpenAI、通义千问、文心一言等主流 AI 模型
-- 🔄 **灵活切换** - 可根据需求选择不同模型
+- 🤖 **19+ 模型支持** - OpenAI、通义千问、文心一言、豆包等
+- 🎨 **富媒体样式** - 边框、背景、气泡、多彩文字
+- 💬 **AI 聊天** - 多模型切换，智能对话
+- 📱 **微信公众号** - 完美适配公众号编辑器
+- 🔧 **在线配置** - 实时配置 API KEY
 
 ## ✨ 功能特性
 
