@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD BeautifyArts - AI Markdown 美化工具</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header>
+            <h1>🎨 MD BeautifyArts</h1>
+            <p class="subtitle">AI 驱动的 Markdown 文档美化工具</p>
+            <button class="settings-btn" onclick="showSettings()">⚙️ API 配置</button>
+        </header>
+
+        <!-- 主要功能区 -->
+        <main>
+            <!-- 模型选择 -->
+            <section class="model-selector">
+                <h2>🤖 选择 AI 模型</h2>
+                <select id="modelSelect">
+                    <option value="">加载中...</option>
+                </select>
+                <p class="model-info" id="modelInfo"></p>
+            </section>
+
+            <!-- 上传方式选择 -->
+            <section class="upload-mode">
+                <h2>📝 美化方式</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('file')">📁 上传文件</button>
+                    <button class="tab-btn" onclick="switchTab('text')">✏️ 直接输入</button>
+                </div>
+            </section>
+
+            <!-- 文件上传 -->
+            <section id="fileUploadSection" class="upload-section active">
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept=".md" hidden>
+                    <div class="upload-icon">📤</div>
+                    <p>点击或拖拽上传 Markdown 文件</p>
+                    <p class="hint">支持 .md 格式，最大 16MB</p>
+                </div>
+                <div id="fileInfo" class="file-info"></div>
+            </section>
+
+            <!-- 文本输入 -->
+            <section id="textInputSection" class="upload-section">
+                <textarea id="markdownInput" placeholder="在此粘贴或输入 Markdown 内容..."></textarea>
+            </section>
+
+            <!-- 美化按钮 -->
+            <section class="action-section">
+                <button id="beautifyBtn" class="beautify-btn" onclick="beautify()">
+                    ✨ 开始美化
+                </button>
+            </section>
+
+            <!-- 进度显示 -->
+            <section id="progressSection" class="progress-section" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <p id="progressText">正在美化中...</p>
+            </section>
+
+            <!-- 结果展示 -->
+            <section id="resultSection" class="result-section" style="display: none;">
+                <h2>✅ 美化完成</h2>
+                
+                <div class="result-info">
+                    <p><strong>使用模型:</strong> <span id="usedModel"></span></p>
+                    <p><strong>原始文件:</strong> <span id="originalFile"></span></p>
+                </div>
+
+                <div class="preview-container">
+                    <h3>📄 预览美化效果</h3>
+                    <div class="preview-tabs">
+                        <button class="preview-tab active" onclick="showPreview('original')">原始内容</button>
+                        <button class="preview-tab" onclick="showPreview('beautified')">美化后</button>
+                        <button class="preview-tab" onclick="showPreview('wechat')">微信公众号</button>
+                    </div>
+                    <div id="previewContent" class="preview-content"></div>
+                    <div id="beautifiedContent" class="beautified-content" style="display: none;"></div>
+                    <div id="wechatContent" class="wechat-content" style="display: none;"></div>
+                </div>
+
+                <div class="download-section">
+                    <a id="downloadLink" class="download-btn" href="#" download>
+                        💾 下载美化后的文件
+                    </a>
+                    <button class="secondary-btn" onclick="copyContent()">
+                        📋 复制 Markdown
+                    </button>
+                    <button class="secondary-btn" onclick="copyWechatContent()">
+                        📱 复制微信公众号格式
+                    </button>
+                    <button class="secondary-btn" onclick="resetAll()">
+                        🔄 重新开始
+                    </button>
+                </div>
+            </section>
+
+            <!-- 错误提示 -->
+            <section id="errorSection" class="error-section" style="display: none;">
+                <h2>❌ 处理失败</h2>
+                <p id="errorMessage"></p>
+                <button class="secondary-btn" onclick="resetError()">重试</button>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer>
+            <p>Powered by MD BeautifyArts v2.0 | 支持多种 AI 大模型</p>
+            <p class="links">
+                <a href="#" onclick="showHelp()">帮助</a> | 
+                <a href="#" onclick="showAbout()">关于</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- 帮助模态框 -->
+    <div id="helpModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('helpModal')">&times;</span>
+            <h2>💡 使用帮助</h2>
+            <div class="help-content">
+                <h3>如何使用：</h3>
+                <ol>
+                    <li>选择一个可用的 AI 模型</li>
+                    <li>上传 Markdown 文件或直接输入内容</li>
+                    <li>点击"开始美化"按钮</li>
+                    <li>等待 AI 处理完成</li>
+                    <li>预览并下载美化后的文档</li>
+                </ol>
+
+                <h3>支持的模型：</h3>
+                <ul>
+                    <li><strong>OpenAI 系列:</strong> GPT-3.5, GPT-4</li>
+                    <li><strong>通义千问:</strong> 阿里云出品</li>
+                    <li><strong>文心一言:</strong> 百度出品</li>
+                    <li><strong>讯飞星火:</strong> 科大讯飞</li>
+                    <li><strong>智谱 AI:</strong> ChatGLM 系列</li>
+                    <li><strong>腾讯混元:</strong> 腾讯出品</li>
+                </ul>
+
+                <h3>美化功能：</h3>
+                <ul>
+                    <li>✨ 智能添加 Emoji 表情</li>
+                    <li>📏 优化分割线和排版</li>
+                    <li>📝 格式化代码块和表格</li>
+                    <li>🎨 美化列表和引用</li>
+                    <li>🔧 修复格式问题</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 关于模态框 -->
+    <div id="aboutModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('aboutModal')">&times;</span>
+            <h2>ℹ️ 关于</h2>
+            <div class="about-content">
+                <h3>MD BeautifyArts v2.0</h3>
+                <p>一个强大的 AI 驱动 Markdown 文档美化工具</p>
+                
+                <h4>功能特点：</h4>
+                <ul>
+                    <li>支持多种主流 AI 大模型</li>
+                    <li>智能美化文档结构和样式</li>
+                    <li>支持文件上传和文本输入</li>
+                    <li>实时预览美化效果</li>
+                    <li>一键下载美化结果</li>
+                    <li>✨ 新增：在线配置 API KEY</li>
+                    <li>💬 新增：AI 聊天功能</li>
+                </ul>
+
+                <h4>技术栈：</h4>
+                <ul>
+                    <li>后端：Flask + Python</li>
+                    <li>前端：原生 HTML/CSS/JS</li>
+                    <li>AI：多模型支持</li>
+                </ul>
+
+                <p class="copyright">© 2026 MD BeautifyArts Team</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- API 配置模态框 -->
+    <div id="settingsModal" class="modal" style="display: none;">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeModal('settingsModal')">&times;</span>
+            <h2>⚙️ API 配置</h2>
+            <div class="settings-content">
+                <p class="hint">配置将保存在当前会话中，刷新页面后需要重新配置。</p>
+                
+                <form id="apiConfigForm" onsubmit="saveApiConfig(event)">
+                    <div class="config-group">
+                        <h3>OpenAI</h3>
+                        <div class="form-group">
+                            <label for="openai_key">API Key:</label>
+                            <input type="text" id="openai_key" name="openai_key" placeholder="sk-...">
+                        </div>
+                    </div>
+
+                    <div class="config-group">
+                        <h3>通义千问（阿里云）</h3>
+                        <div class="form-group">
+                            <label for="dashscope_key">API Key:</label>
+                            <input type="text" id="dashscope_key" name="dashscope_key" placeholder="sk-...">
+                        </div>
+                    </div>
+
+                    <div class="config-group">
+                        <h3>文心一言（百度）</h3>
+                        <div class="form-group">
+                            <label for="qianfan_ak">Access Key:</label>
+                            <input type="text" id="qianfan_ak" name="qianfan_ak" placeholder="...">
+                        </div>
+                        <div class="form-group">
+                            <label for="qianfan_sk">Secret Key:</label>
+                            <input type="text" id="qianfan_sk" name="qianfan_sk" placeholder="...">
+                        </div>
+                    </div>
+
+                    <div class="config-group">
+                        <h3>讯飞星火</h3>
+                        <div class="form-group">
+                            <label for="spark_key">API Key:</label>
+                            <input type="text" id="spark_key" name="spark_key" placeholder="...">
+                        </div>
+                    </div>
+
+                    <div class="config-group">
+                        <h3>智谱 AI</h3>
+                        <div class="form-group">
+                            <label for="zhipu_key">API Key:</label>
+                            <input type="text" id="zhipu_key" name="zhipu_key" placeholder="...">
+                        </div>
+                    </div>
+
+                    <div class="config-group">
+                        <h3>腾讯混元</h3>
+                        <div class="form-group">
+                            <label for="hunyuan_key">API Key:</label>
+                            <input type="text" id="hunyuan_key" name="hunyuan_key" placeholder="...">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="primary-btn">💾 保存配置</button>
+                        <button type="button" class="secondary-btn" onclick="closeModal('settingsModal')">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 聊天窗口 -->
+    <div id="chatWindow" class="chat-window" style="display: none;">
+        <div class="chat-header">
+            <h3>💬 AI 聊天</h3>
+            <div class="chat-controls">
+                <select id="chatModel" onchange="updateChatModel()">
+                    <option value="">加载中...</option>
+                </select>
+                <button class="close-btn" onclick="toggleChat()">×</button>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message system">
+                <div class="message-content">欢迎使用 AI 聊天！选择一个模型开始对话吧~</div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <textarea id="chatInput" placeholder="输入消息... (Shift+Enter 换行)" onkeydown="handleChatKeydown(event)"></textarea>
+            <button id="sendBtn" onclick="sendMessage()">🚀 发送</button>
+        </div>
+    </div>
+
+    <!-- 聊天切换按钮 -->
+    <button id="chatToggle" class="chat-toggle" onclick="toggleChat()">💬 聊天</button>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

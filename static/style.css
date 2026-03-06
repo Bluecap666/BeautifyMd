@@ -1,0 +1,812 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+/* 头部 */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px;
+    text-align: center;
+    position: relative;
+}
+
+header h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+.settings-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s;
+}
+
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 主体内容 */
+main {
+    padding: 40px;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+/* 模型选择器 */
+.model-selector select {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.model-selector select:hover {
+    border-color: #667eea;
+}
+
+.model-info {
+    margin-top: 10px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* 标签页 */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    background: #f0f0f0;
+    border-radius: 10px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.tab-btn:hover:not(.active) {
+    background: #e0e0e0;
+}
+
+/* 上传区域 */
+.upload-section {
+    display: none;
+}
+
+.upload-section.active {
+    display: block;
+}
+
+.upload-area {
+    border: 3px dashed #ccc;
+    border-radius: 15px;
+    padding: 60px 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #fafafa;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    border-color: #667eea;
+    background: #f0f4ff;
+}
+
+.upload-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+}
+
+.hint {
+    color: #999;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.file-info {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e8f5e9;
+    border-radius: 10px;
+    color: #2e7d32;
+}
+
+/* 文本输入框 */
+#markdownInput {
+    width: 100%;
+    min-height: 300px;
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    resize: vertical;
+    transition: all 0.3s;
+}
+
+#markdownInput:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
+}
+
+/* 美化按钮 */
+.action-section {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.beautify-btn {
+    padding: 20px 60px;
+    font-size: 1.3em;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.beautify-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+}
+
+.beautify-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 进度条 */
+.progress-section {
+    text-align: center;
+    padding: 30px;
+    background: #f5f5f5;
+    border-radius: 15px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 30px;
+    background: #e0e0e0;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    width: 0%;
+    animation: progress 2s ease-in-out infinite;
+}
+
+@keyframes progress {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}
+
+/* 结果展示 */
+.result-section {
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+.result-info {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.preview-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.preview-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.preview-tab {
+    padding: 10px 20px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.preview-tab.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.preview-content {
+    min-height: 200px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* 下载区域 */
+.download-section {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.download-btn,
+.secondary-btn {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.download-btn {
+    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+    color: white;
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+.secondary-btn {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.secondary-btn:hover {
+    background: #e0e0e0;
+}
+
+/* 错误提示 */
+.error-section {
+    background: #ffebee;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.error-section h2 {
+    color: #c62828;
+}
+
+.error-section p {
+    color: #666;
+    margin: 20px 0;
+}
+
+/* 模态框 */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 2em;
+    cursor: pointer;
+    color: #999;
+    transition: all 0.3s;
+}
+
+.close:hover {
+    color: #333;
+}
+
+.help-content h3,
+.about-content h3 {
+    color: #667eea;
+    margin: 20px 0 10px 0;
+}
+
+.help-content ul,
+.help-content ol,
+.about-content ul {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.help-content li,
+.about-content li {
+    margin-bottom: 8px;
+}
+
+.copyright {
+    margin-top: 30px;
+    text-align: center;
+    color: #999;
+    font-size: 0.9em;
+}
+
+/* 页脚 */
+footer {
+    background: #f5f5f5;
+    padding: 30px;
+    text-align: center;
+    color: #666;
+}
+
+.links {
+    margin-top: 10px;
+}
+
+.links a {
+    color: #667eea;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+    
+    main {
+        padding: 20px;
+    }
+    
+    .download-section {
+        flex-direction: column;
+    }
+    
+    .download-btn,
+    .secondary-btn {
+        width: 100%;
+    }
+}
+
+/* ==================== 新增样式 ==================== */
+
+/* 美化内容预览 */
+.markdown-preview {
+    line-height: 1.8;
+}
+
+.preview-content,
+.beautified-content,
+.wechat-content {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 20px;
+    background: #f7fafc;
+    border-radius: 10px;
+    margin-top: 15px;
+    border: 1px solid #e2e8f0;
+}
+
+.preview-content {
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.wechat-content {
+    background: white;
+    border: 2px solid #667eea;
+}
+
+.markdown-preview h1 {
+    color: #667eea;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.markdown-preview h2 {
+    color: #764ba2;
+    border-bottom: 2px solid #764ba2;
+    padding-bottom: 8px;
+}
+
+.markdown-preview h3 {
+    color: #5a67d8;
+}
+
+.markdown-preview code {
+    background: #f7fafc;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+.markdown-preview pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.markdown-preview pre code {
+    background: transparent;
+    color: inherit;
+}
+
+/* 设置模态框 */
+.modal-large {
+    max-width: 900px;
+}
+
+.settings-content {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.config-group {
+    margin-bottom: 25px;
+    padding: 20px;
+    background: #f7fafc;
+    border-radius: 10px;
+}
+
+.config-group h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.primary-btn {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.hint {
+    color: #718096;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+/* 聊天窗口 */
+.chat-window {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 400px;
+    height: 600px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    overflow: hidden;
+}
+
+.chat-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.chat-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.chat-controls select {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+}
+
+.chat-controls select option {
+    background: #764ba2;
+    color: white;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f7fafc;
+}
+
+.message {
+    margin-bottom: 15px;
+    display: flex;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.assistant {
+    justify-content: flex-start;
+}
+
+.message.system {
+    justify-content: center;
+}
+
+.message-content {
+    max-width: 80%;
+    padding: 12px 18px;
+    border-radius: 15px;
+    word-wrap: break-word;
+}
+
+.message.user .message-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.message.assistant .message-content {
+    background: white;
+    color: #2d3748;
+    border: 1px solid #e2e8f0;
+    border-bottom-left-radius: 5px;
+}
+
+.message.system .message-content {
+    background: #edf2f7;
+    color: #718096;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.message.loading .message-content {
+    opacity: 0.7;
+}
+
+.chat-input {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+}
+
+.chat-input textarea {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    resize: none;
+    font-family: inherit;
+    font-size: 0.95em;
+    min-height: 50px;
+    max-height: 150px;
+}
+
+.chat-input textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.chat-input button {
+    padding: 10px 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.chat-input button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* 聊天切换按钮 */
+.chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s;
+    z-index: 1000;
+}
+
+.chat-toggle:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .chat-window {
+        width: calc(100% - 40px);
+        height: calc(100vh - 150px);
+        bottom: 70px;
+        right: 20px;
+    }
+    
+    .chat-toggle {
+        bottom: 15px;
+        right: 15px;
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+}

@@ -1,0 +1,13 @@
+# MD BeautifyArts - AI 驱动的 Markdown 文档美化工具
+
+## 核心依赖
+openai>=1.0.0
+python-dotenv>=1.0.0
+tqdm>=4.65.0
+colorama>=0.4.6
+PyYAML>=6.0
+
+## Web UI 依赖（可选）
+flask>=3.0.0
+flask-cors>=4.0.0
+werkzeug>=3.0.0
