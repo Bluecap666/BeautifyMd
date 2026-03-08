@@ -70,13 +70,14 @@ class AIBeautifier:
         """
         # 基础指令 - 强调完整美化和智能优化
         system_instruction = """你是一个专业的 Markdown 文档美化专家和內容优化顾问。
-你的任务是将提供的 Markdown 文档进行美化和优化，使其更加美观、易读和专业。
+你的任务是将提供的 Markdown 文档进行美化和优化，使其更加美观、易读和专业，特别适配微信公众号格式。
 
 ⚠️ 重要要求：
 1. 必须美化整篇文档的每一个部分，不能遗漏任何内容
 2. 从第一个字符到最后一个字符都要进行美化
 3. 确保文档的完整性，不要删除或跳过任何段落
 4. 如果文档很长，请耐心处理每一部分内容
+5. 美化后的内容需要适配微信公众号的显示特性
 
 🎯 智能优化职责：
 1. **格式检查**：检查文档结构是否合理，必要时进行调整
@@ -85,6 +86,51 @@ class AIBeautifier:
 4. **示例补充**：在需要的地方可以添加适当的示例或说明
 5. **重点标注**：对重要内容添加粗体、斜体等强调标记
 6. **结构完善**：如果章节划分不合理，可以适当调整
+
+📋 微信公众号格式要求：
+1. **标题**：在文档最开始添加一个吸引人的标题（如：《文章主题：关键技术全解析》）
+2. **技术概览列表**：紧随标题之后，使用列表形式展示文章中实际提及的核心技术关键词及简短解释
+3. **内容区域**：对每个问题或段落使用淡色背景或边框进行包装
+4. **分割线**：使用多样形状和颜色的分割线分隔不同内容块
+5. **尾语**：在文档末尾添加总结性尾语或相关引导内容
+
+⚠️ 技术概览关键要求：
+- 严格基于原文内容提取技术点，不得凭空创造
+- 只能使用文章中明确提及的技术术语、框架、工具或概念
+- 若文章中未提及特定技术，则不应出现在概览中
+- 对于每个技术点，仅提供文章中相关的简短解释
+
+技术概览列表格式（基于原文内容）：
+### 🔍 核心技术概览
+- **[原文中提及的技术A]**：[根据原文提供的简短解释]
+- **[原文中提及的技术B]**：[根据原文提供的简短解释]  
+- **[原文中提及的技术C]**：[根据原文提供的简短解释]
+
+🎨 微信样式美化规则：
+1. **内容区域背景/边框**：
+   - 使用 HTML/CSS 样式模拟淡色背景块（如使用灰色阴影块）
+   - 或使用 Markdown 的引用格式 `>` 来创建视觉上的分隔
+   - 也可使用特殊的符号或 emoji 作为内容区域的边框装饰
+
+2. **分割线多样性**：
+   - 使用不同颜色或形状的分割线，如：
+     ***
+     * * *
+     ---
+     *** 
+     或使用重复符号：★★★★★★，✿✿✿✿✿，◇◇◇◇◇
+   
+3. **视觉层次**：
+   - 一级标题使用 H1 或 H2 标签
+   - 二级标题使用 H3 或 H4 标签
+   - 重要内容使用粗体或高亮标记
+
+📏 间距一致性要求：
+1. 确保各章节之间、问题与问题之间有统一的间距
+2. 每个独立问题或段落之间只保留一个空行（即一个换行符）
+3. 避免出现连续多个空行的情况，保持文档紧凑整洁
+4. 对于列表、代码块、引用等特殊格式，保持与其前后内容的间距一致
+5. 在处理换行时，确保不会产生多余的空行，维持整体视觉平衡
 
 美化规则：
 1. 添加合适的 emoji 表情来增强视觉效果和表达力
@@ -166,24 +212,48 @@ class AIBeautifier:
             if self.model.startswith('qwen-'):
                 # 使用 DashScope SDK
                 import dashscope
-                from dashscope import Generation
+                from http import HTTPStatus
                 
                 print(f"  使用 DashScope SDK 调用 {self.model}...")
                 
-                response = Generation.call(
+                # 设置API密钥
+                dashscope.api_key = self.config.dashscope_api_key
+                
+                response = dashscope.Generation.call(
                     model=self.model,
                     prompt=prompt,
                     temperature=0.7,
                     max_tokens=4096,
+                    top_p=0.8
                 )
                 
-                # 解析响应
+                # 增强的响应解析
+                result = ""
+                
+                # 检查响应状态
+                if hasattr(response, 'status_code'):
+                    if response.status_code != HTTPStatus.OK:
+                        raise Exception(f"API 请求失败：HTTP {response.status_code}, Message: {getattr(response, 'message', 'Unknown error')}")
+                
+                # 尝试多种方式获取文本
                 if hasattr(response, 'output') and hasattr(response.output, 'text'):
                     result = response.output.text.strip()
+                elif hasattr(response, 'output') and isinstance(response.output, dict):
+                    result = response.output.get('text', '').strip()
                 elif hasattr(response, 'text'):
                     result = response.text.strip()
                 else:
+                    # 如果是字符串，直接使用
                     result = str(response).strip()
+                
+                # 验证结果
+                if not result or len(result) < 10:
+                    raise Exception(f"AI 返回内容为空或过短：{result[:50] if result else 'None'}")
+                
+                # 检查是否包含 Markdown 特征
+                if not any(marker in result for marker in ['#', '\n', '**', '-']):
+                    print(f"⚠️  警告：返回内容可能不是有效的 Markdown")
+                    print(f"前 100 个字符：{result[:100]}")
                 
                 return result
             else:
@@ -199,6 +269,11 @@ class AIBeautifier:
                 )
                 
                 result = response.choices[0].message.content.strip()
+                
+                # 验证结果
+                if not result or len(result) < 10:
+                    raise Exception(f"AI 返回内容为空或过短")
+                
                 return result
             
         except Exception as e:
